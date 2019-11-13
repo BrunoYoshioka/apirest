@@ -1,4 +1,4 @@
-package com.agenda.apirest.config.swagger;
+package com.agenda.apirest.config;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import org.springframework.context.annotation.Bean;

@@ -7,7 +7,6 @@ import com.agenda.apirest.models.Cliente;
 
 public class ClienteDto {
 	
-	private Long id;
 	private String nome;
 	private String endereco;
 	private String email;
@@ -15,18 +14,17 @@ public class ClienteDto {
 	private String telefone;
 	private String celular;
 	
+	public ClienteDto() {
+		
+	}
+	
 	public ClienteDto(Cliente cliente) {
-		this.id = cliente.getId();
 		this.nome = cliente.getNome();
 		this.endereco = cliente.getEndereco();
 		this.email = cliente.getEmail();
 		this.sexo = cliente.getSexo();
 		this.telefone = cliente.getTelefone();
 		this.celular = cliente.getCelular();
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getNome() {
@@ -39,6 +37,30 @@ public class ClienteDto {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	public String getSexo() {

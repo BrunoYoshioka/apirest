@@ -24,6 +24,7 @@ import com.agenda.apirest.controller.dto.ClienteDto;
 import com.agenda.apirest.controller.dto.DetalhesDoClienteDto;
 import com.agenda.apirest.controller.form.AtualizacaoClienteForm;
 import com.agenda.apirest.controller.form.ClienteForm;
+import com.agenda.apirest.jms.EnviarClienteJms;
 import com.agenda.apirest.models.Cliente;
 import com.agenda.apirest.repository.ClienteRepository;
 
@@ -40,6 +41,9 @@ public class ClientesController {
 	//Injetando o ClienteRepository
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnviarClienteJms enviarClienteJms;
 	
 	@GetMapping //Metodo Listar Todos os Clientes
 	@ApiOperation(value="Retorna uma lista de clientes ou filtro por nome")
@@ -70,9 +74,28 @@ public class ClientesController {
 	
 	@PostMapping //Metodo cadastrar
 	@ApiOperation(value="Cadastrar cliente numa agenda")
-	public Cliente cadastraCliente (@RequestBody @Valid Cliente cliente) {
-		return clienteRepository.save(cliente);
+	public Cliente cadastraCliente (@RequestBody @Valid ClienteDto clienteDto) {
+		Cliente cliente = new Cliente();
+		cliente.setSexo(clienteDto.getSexo());
+		cliente.setCelular(clienteDto.getCelular());
+		cliente.setEndereco(clienteDto.getEndereco());
+		cliente.setEmail(clienteDto.getEmail());
+		cliente.setNome(clienteDto.getNome());
+		cliente.setTelefone(clienteDto.getTelefone());
+		cliente = clienteRepository.save(cliente);
+		enviarClienteJms.enviarCliente(cliente);
+		return cliente;
 	}
+	
+//	@PostMapping //Metodo cadastrar
+//	@ApiOperation(value="Cadastrar cliente numa agenda")
+//	@Transactional
+//	public ResponseEntity<ClienteDto> cadastrar(@RequestBody @Valid ClienteDto clienteDto, UriComponentsBuilder uriBuilder) {
+//		clienteDto = clienteRepository.cadastrar(clienteDto);
+//		enviarCliente.enviarCliente(clienteDto);
+//		URI uri = uriBuilder.path("/clientes/{id}").buildAndExpand(clienteDto.getId()).toUri();
+//		return ResponseEntity.created(uri).body(clienteDto);
+//	}
 	
 	/*@PostMapping //Metodo cadastrar
 	@ApiOperation(value="Cadastrar cliente numa agenda")
